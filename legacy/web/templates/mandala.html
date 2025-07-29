@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Mandala for {{ trader_address }} - Portfolio Mandala{% endblock %}
+
+{% block content %}
+<div class="mandala-page">
+    <div class="page-header">
+        <a href="/" class="back-link">← Back to Generator</a>
+        <h2>Portfolio Mandala</h2>
+        <div class="address-display">
+            <code>{{ trader_address }}</code>
+        </div>
+    </div>
+
+    <div class="loading-container" id="loading-container">
+        <div class="loader">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+        </div>
+        <p>Generating your mandala...</p>
+    </div>
+
+    <div class="mandala-viewer" id="mandala-viewer" style="display: none;">
+        <div class="viewer-controls">
+            <button class="control-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+            <button class="control-btn" id="download-btn">↓ Download</button>
+            <button class="control-btn" id="share-btn">↗ Share</button>
+        </div>
+        
+        <div class="mandala-canvas" id="mandala-canvas">
+            <!-- SVG will be loaded here -->
+        </div>
+        
+        <div class="portfolio-stats" id="portfolio-stats">
+            <!-- Portfolio statistics will be loaded here -->
+        </div>
+    </div>
+
+    <div class="error-display" id="error-display" style="display: none;">
+        <h3>Unable to generate mandala</h3>
+        <p id="error-text"></p>
+        <div class="error-actions">
+            <button class="action-btn" id="retry-btn">Retry</button>
+            <a href="/" class="action-btn secondary">Try Another Address</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const traderAddress = "{{ trader_address }}";
+</script>
+<script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
+{% endblock %}

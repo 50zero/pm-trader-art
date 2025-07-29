@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <div class="header-actions">
+            <button id="connect-wallet-btn" class="connect-wallet-btn" onclick="toggleWalletConnection()">
+                Connect Wallet
+            </button>
+        </div>
+        
+        <h1 class="hero-title">Polymarket Tradoor Visualiser</h1>
+        <p class="hero-subtitle">Enter a polymarket trader address to generate an SVG representation of their most frequently traded categories</p>
+        
+        <!-- Wallet connection status -->
+        <div id="wallet-info" class="wallet-info" style="display: none;"></div>
+        
+        <!-- Network warning -->
+        <div id="network-warning" class="network-warning" style="display: none;"></div>
+        
+        <div class="input-section">
+            <form id="mandala-form" class="mandala-form">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="trader-address" 
+                        placeholder="0x1234567890abcdef..." 
+                        class="address-input"
+                        pattern="^0x[a-fA-F0-9]{40}$"
+                        required
+                    />
+                    <button type="submit" class="generate-btn" id="generate-btn">
+                        <span class="btn-text">Generate Mandala</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                </div>
+                <p class="input-hint">Enter a valid address (0x...)</p>
+            </form>
+        </div>
+
+        <div class="example-addresses">
+            <h3>Try these example addresses:</h3>
+            <div class="example-list">
+                <button class="example-btn" data-address="0x7ee1b64be7016b0b0234ab6cabcaa689fd18dae8">0x7ee1b...dae8</button>
+                <button class="example-btn" data-address="0x863134d00841b2e200492805a01e1e2f5defaa53">0x8631...aa53</button>
+                <button class="example-btn" data-address="0x9d84ce0306f8551e02efef1680475fc0f1dc1344">0x9d84c...1344</button>
+                <button class="example-btn" data-address="0x53d2d3c78597a78402d4db455a680da7ef560c3f">0x53d2...0c3f</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="results-section" id="results-section" style="display: none;">
+    <div class="results-header">
+        <h3>Generated Visualisation</h3>
+        <div class="results-actions">
+            <button class="action-btn nft-btn" id="mint-nft-btn" onclick="mintCurrentNFT()" style="display: none;">
+                🎨 Mint NFT
+            </button>
+            <button class="action-btn" id="download-btn">Download SVG</button>
+            <button class="action-btn secondary" id="new-mandala-btn">Generate Another</button>
+        </div>
+    </div>
+    
+    <div class="mandala-container">
+        <div class="mandala-display" id="mandala-display">
+            <!-- SVG will be inserted here -->
+        </div>
+        
+        <div class="portfolio-info" id="portfolio-info">
+            <!-- Portfolio details will be inserted here -->
+        </div>
+    </div>
+</div>
+
+<div class="error-section" id="error-section" style="display: none;">
+    <div class="error-content">
+        <h3>Oops! Something went wrong</h3>
+        <p id="error-message"></p>
+        <button class="action-btn" id="retry-btn">Try Again</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/mandala.js') }}"></script>
+<script>
+// Global functions for wallet and NFT functionality
+function toggleWalletConnection() {
+    if (window.walletConnection) {
+        if (window.walletConnection.isWalletConnected()) {
+            window.walletConnection.disconnectWallet();
+        } else {
+            window.walletConnection.connectWallet();
+        }
+    }
+}
+
+function mintCurrentNFT() {
+    if (window.nftMinting && window.walletConnection) {
+        const connectedAccount = window.walletConnection.getConnectedAccount();
+        if (connectedAccount) {
+            window.nftMinting.mintNFT(connectedAccount);
+        } else {
+            MandalaApp.showToast('Please connect your wallet first', 'error');
+        }
+    }
+}
+</script>
+{% endblock %}

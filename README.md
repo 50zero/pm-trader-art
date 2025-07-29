@@ -1,0 +1,1 @@
+# Polymarket Mandalas -- Generate a minimalistic visualisation of your trading history

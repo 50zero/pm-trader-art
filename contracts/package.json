@@ -1,0 +1,40 @@
+{
+  "name": "portfolio-mandala-contracts",
+  "version": "1.0.0",
+  "description": "Educational smart contracts for Portfolio Mandala NFTs on Polygon Amoy",
+  "author": "Educational Project",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/pm-trader-art.git"
+  },
+  "keywords": [
+    "nft",
+    "solidity",
+    "polygon",
+    "hardhat",
+    "educational",
+    "blockchain",
+    "erc721"
+  ],
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.js --network amoy",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "verify": "hardhat verify --network amoy",
+    "clean": "hardhat clean",
+    "node": "hardhat node"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "hardhat": "^2.17.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

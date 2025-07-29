@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Mandala NFT - Educational Blockchain Project</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="Transform Polymarket trading data into beautiful NFT mandalas on Polygon Amoy testnet">
+    <meta name="keywords" content="NFT, blockchain, education, Polymarket, Web3, Polygon">
+</head>
+<body>
+    <div class="app-container">
+        <main class="main-content">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <div class="header-actions">
+                        <button id="connect-wallet-btn" class="connect-wallet-btn" onclick="toggleWalletConnection()">
+                            Connect Wallet
+                        </button>
+                    </div>
+                    
+                    <h1 class="hero-title">Portfolio Mandala NFT</h1>
+                    <p class="hero-subtitle">Transform Polymarket trading data into stunning mandala visualizations and mint them as NFTs on Polygon Amoy</p>
+                    
+                    <!-- Wallet connection status -->
+                    <div id="wallet-info" class="wallet-info" style="display: none;"></div>
+                    
+                    <!-- Network warning -->
+                    <div id="network-warning" class="network-warning" style="display: none;"></div>
+                    
+                    <div class="input-section">
+                        <form id="mandala-form" class="mandala-form">
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    id="trader-address" 
+                                    placeholder="0x1234567890abcdef..." 
+                                    class="address-input"
+                                    pattern="^0x[a-fA-F0-9]{40}$"
+                                    required
+                                />
+                                <button type="submit" class="generate-btn" id="generate-btn">
+                                    <span class="btn-text">Generate Mandala</span>
+                                    <span class="btn-loader"></span>
+                                </button>
+                            </div>
+                            <p class="input-hint">Enter a valid Ethereum address (0x...)</p>
+                        </form>
+                    </div>
+
+                    <div class="example-addresses">
+                        <h3>Try these example addresses:</h3>
+                        <div class="example-list">
+                            <button class="example-btn" data-address="0x7ee1b64be7016b0b0234ab6cabcaa689fd18dae8">0x7ee1b...dae8</button>
+                            <button class="example-btn" data-address="0x863134d00841b2e200492805a01e1e2f5defaa53">0x8631...aa53</button>
+                            <button class="example-btn" data-address="0x9d84ce0306f8551e02efef1680475fc0f1dc1344">0x9d84c...1344</button>
+                            <button class="example-btn" data-address="0x53d2d3c78597a78402d4db455a680da7ef560c3f">0x53d2...0c3f</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-section" style="display: none;">
+                <div class="results-header">
+                    <h3>Generated Mandala</h3>
+                    <div class="results-actions">
+                        <button class="action-btn nft-btn" id="mint-nft-btn" onclick="mintCurrentNFT()" style="display: none;">
+                            🎨 Mint NFT
+                        </button>
+                        <button class="action-btn" id="download-btn">Download SVG</button>
+                        <button class="action-btn secondary" id="new-mandala-btn">Generate Another</button>
+                    </div>
+                </div>
+                
+                <div class="mandala-container">
+                    <div class="mandala-display" id="mandala-display">
+                        <!-- SVG will be inserted here -->
+                    </div>
+                    
+                    <div class="portfolio-info" id="portfolio-info">
+                        <!-- Portfolio details will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="error-section" id="error-section" style="display: none;">
+                <div class="error-content">
+                    <h3>Oops! Something went wrong</h3>
+                    <p id="error-message"></p>
+                    <button class="action-btn" id="retry-btn">Try Again</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>🎓 Educational blockchain project • Transform trading data into NFT art • <a href="https://github.com/your-username/pm-trader-art" target="_blank">View on GitHub</a></p>
+        </footer>
+    </div>
+
+    <div class="background-effects">
+        <div class="grid-overlay"></div>
+        <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Configuration -->
+    <script>
+        // API Configuration - students can update these endpoints
+        window.API_CONFIG = {
+            // For development: http://localhost:3000/api
+            // For production: https://your-project.vercel.app/api
+            BASE_URL: 'https://pm-trader-art-api.vercel.app/api',
+            
+            // Contract configuration
+            CONTRACT_ADDRESS: '0x98Ef066332b16d0f427ae936F0a3662c5ae68890',
+            NETWORK: {
+                chainId: '0x13882', // 80002 in hex (Polygon Amoy)
+                chainName: 'Polygon Amoy Testnet',
+                nativeCurrency: {
+                    name: 'MATIC',
+                    symbol: 'MATIC',
+                    decimals: 18
+                },
+                rpcUrls: ['https://rpc-amoy.polygon.technology/'],
+                blockExplorerUrls: ['https://www.oklink.com/amoy']
+            }
+        };
+    </script>
+
+    <!-- Core JavaScript -->
+    <script src="js/app.js"></script>
+    <script src="js/mandala.js"></script>
+    <script src="js/web3/wallet-connection.js"></script>
+    <script src="js/web3/nft-minting.js"></script>
+    
+    <script>
+        // Global functions for wallet and NFT functionality
+        function toggleWalletConnection() {
+            if (window.walletConnection) {
+                if (window.walletConnection.isWalletConnected()) {
+                    window.walletConnection.disconnectWallet();
+                } else {
+                    window.walletConnection.connectWallet();
+                }
+            }
+        }
+
+        function mintCurrentNFT() {
+            if (window.nftMinting && window.walletConnection) {
+                const connectedAccount = window.walletConnection.getConnectedAccount();
+                if (connectedAccount) {
+                    window.nftMinting.mintNFT(connectedAccount);
+                } else {
+                    MandalaApp.showToast('Please connect your wallet first', 'error');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

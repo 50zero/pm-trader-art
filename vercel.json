@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "name": "portfolio-mandala-api",
+  "builds": [
+    {
+      "src": "api/mandala.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/nft.py", 
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/polymarket.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/mandala/(.*)",
+      "dest": "/api/mandala.py"
+    },
+    {
+      "src": "/api/nft/(.*)",
+      "dest": "/api/nft.py"
+    },
+    {
+      "src": "/api/polymarket/(.*)",
+      "dest": "/api/polymarket.py"
+    }
+  ],
+  "env": {
+    "CONTRACT_ADDRESS": "@contract_address"
+  },
+  "functions": {
+    "api/mandala.py": {
+      "maxDuration": 30
+    },
+    "api/nft.py": {
+      "maxDuration": 10
+    },
+    "api/polymarket.py": {
+      "maxDuration": 20
+    }
+  }
+}

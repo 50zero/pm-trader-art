@@ -1,0 +1,50 @@
+{
+  "name": "portfolio-mandala-nft",
+  "version": "1.0.0",
+  "description": "Educational blockchain project - Transform Polymarket trading data into NFT mandalas",
+  "main": "frontend/index.html",
+  "scripts": {
+    "dev:frontend": "cd frontend && python -m http.server 8080",
+    "dev:api": "python start_server.py",
+    "deploy:api": "vercel --prod",
+    "deploy:frontend": "echo 'Deploy frontend/ folder to GitHub Pages'",
+    "test:api": "python -m pytest api/",
+    "build": "echo 'No build step needed for hybrid deployment'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/pm-trader-art.git"
+  },
+  "keywords": [
+    "nft",
+    "blockchain",
+    "education",
+    "polymarket",
+    "web3",
+    "polygon",
+    "serverless",
+    "jamstack"
+  ],
+  "author": "Educational Project",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "python": ">=3.8.0"
+  },
+  "vercel": {
+    "functions": {
+      "api/mandala.py": {
+        "maxDuration": 30
+      },
+      "api/nft.py": {
+        "maxDuration": 10
+      },
+      "api/polymarket.py": {
+        "maxDuration": 20
+      }
+    }
+  }
+}
