@@ -33,18 +33,5 @@
   "engines": {
     "node": ">=16.0.0",
     "python": ">=3.8.0"
-  },
-  "vercel": {
-    "functions": {
-      "api/mandala.py": {
-        "maxDuration": 30
-      },
-      "api/nft.py": {
-        "maxDuration": 10
-      },
-      "api/polymarket.py": {
-        "maxDuration": 20
-      }
-    }
   }
 }
